@@ -1,0 +1,15 @@
+export const formData = {
+  firstName: 'Gerimedica',
+  lastName: 'BV',
+  email: 'test@test.com',
+  gender: 'Male',
+  mobileNumber: '0123456789',
+  Month: 'January',
+  year: '1990',
+  day: '15',
+  hobbies: 'Reading',
+  currentAddress: 'Netherlands',
+  subject: 'Playwright Assignment',
+  state: 'NCR',
+  city: 'Dehli',
+}
