@@ -39,7 +39,14 @@ export class forms {
     await this.page.fill('#currentAddress', address)
   }
   async stateDropdown() {
-    // await this.page.waitForSelector('#state')
-    await this.page.locator('#state').dispatchEvent('click')
+    await this.page.locator('#state').click({force: true})
+    await this.page.locator('#react-select-3-option-0').click({force: true})
+  }
+  async cityDropdown() {
+    await this.page.locator('#city').click({force: true})
+    await this.page.locator('#react-select-4-option-0').click({force: true})
+  }
+  async submit_button() {
+    await this.page.getByText('Submit').click({force: true})
   }
 }

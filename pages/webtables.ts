@@ -20,7 +20,6 @@ export class Webtables {
     await this.page.fill('#lastName', LName)
   }
   async email_field(emial: string) {
-    // await this.page.fill('#email', '')
     await this.page.fill('#userEmail', emial)
   }
   async age_field(age: string) {

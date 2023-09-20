@@ -2,7 +2,7 @@ import {test} from '@playwright/test'
 import {Webtables} from '../../pages/webtables'
 import {userData} from '../../test-data/userData'
 test.describe('TC01 Senario A and B', () => {
-  let page
+  let page: any
   test.beforeEach(async ({browser}) => {
     page = await browser.newPage()
     const Webtable = new Webtables(page)
@@ -12,7 +12,6 @@ test.describe('TC01 Senario A and B', () => {
   })
   test('Verify user can enter new data into the table', async () => {
     const Webtable = new Webtables(page)
-
     await Webtable.add_button()
     await Webtable.first_name_field(userData.firstName)
     await Webtable.last_name_field(userData.lastName)

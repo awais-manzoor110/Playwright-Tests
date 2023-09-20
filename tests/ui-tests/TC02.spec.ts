@@ -11,9 +11,7 @@ test('Verify broken image', async ({page}) => {
   const res = await page.request.get('/images/Toolsqa_1.jpg')
   if (res.status() === 404) {
     expect(res.status()).toBe(404)
-    console.log('Image is broken')
   } else {
     expect(res.status()).toBe(200)
-    console.log('Image is not broken')
   }
 })
