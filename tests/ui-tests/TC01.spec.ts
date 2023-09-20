@@ -3,15 +3,15 @@ import {Webtables} from '../../pages/webtables'
 import {userData} from '../../test-data/userData'
 test.describe('TC01 Senario A and B', () => {
   let page: any
+  let Webtable: Webtables
   test.beforeEach(async ({browser}) => {
     page = await browser.newPage()
-    const Webtable = new Webtables(page)
+    Webtable = new Webtables(page)
     await page.goto('/')
     await Webtable.element_card()
     await Webtable.webtables_options()
   })
   test('Verify user can enter new data into the table', async () => {
-    const Webtable = new Webtables(page)
     await Webtable.add_button()
     await Webtable.first_name_field(userData.firstName)
     await Webtable.last_name_field(userData.lastName)
@@ -23,7 +23,6 @@ test.describe('TC01 Senario A and B', () => {
     await Webtable.data_assertion(...userData.table_data)
   })
   test('Verify user can edit the row in a table', async () => {
-    const Webtable = new Webtables(page)
     await Webtable.edit_button()
     await Webtable.first_name_field(userData.newfirstName)
     await Webtable.last_name_field(userData.newlastName)

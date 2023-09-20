@@ -8,6 +8,5 @@ test('Verify the tooltip', async ({page}) => {
   await probar.widget_card()
   await ttip.toolTip_option()
   await ttip.hover_button()
-  // await page.waitForTimeout(3000)
   await ttip.hover_assertion()
 })
