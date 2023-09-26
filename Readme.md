@@ -1,4 +1,4 @@
-# Assignment Test Cases with Playwright TypeScript
+#  Test Cases with Playwright TypeScript
 
 This repository contains assignment test cases implemented using Playwright and TypeScript. The tests are organized using the Page Object Model (POM) design pattern for better maintainability and readability.
 
@@ -6,7 +6,7 @@ This repository contains assignment test cases implemented using Playwright and 
 
 **Prerequisites:** Ensure you have Node.js and npm (Node Package Manager) installed on your system.
 
-**Clone the Repository:** Clone this repository to your local machine using git clone https://github.com/awais-manzoor110/RanaAwais-GM-Assignment.git
+**Clone the Repository:** Clone this repository to your local machine using git clone https://github.com/awais-manzoor110/Playwright-Tests.git
 
 **Install Dependencies:** Navigate to the project directory and run npm install to install the necessary dependencies.
 
