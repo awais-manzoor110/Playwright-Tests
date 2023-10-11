@@ -1,7 +1,6 @@
-import {test} from '@playwright/test'
-import {dragAndDrop} from '../../pages/draganddrop'
-test('Verify user can drag and drop', async ({page}) => {
-  const dragdrop = new dragAndDrop(page)
+import test, {expect} from '../../fixtures/basePages'
+
+test('Verify user can drag and drop', async ({page, dragdrop}) => {
   await page.goto('/')
   await dragdrop.interaction_card()
   await dragdrop.droppable_options()

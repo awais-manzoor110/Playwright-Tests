@@ -1,8 +1,7 @@
-import {test} from '@playwright/test'
-import {progressBar} from '../../pages/progressBar'
+import test, {expect} from '../../fixtures/basePages'
 
-test('Verify the progress bar', async ({page}) => {
-  const probar = new progressBar(page)
+test('Verify the progress bar', async ({probar, page}) => {
+  // const probar = new progressBar(page)
   await page.goto('/')
   await probar.widget_card()
   await probar.progressBar_option()

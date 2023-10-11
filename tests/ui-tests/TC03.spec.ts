@@ -1,17 +1,13 @@
-import {test} from '@playwright/test'
-import {forms} from '../../pages/forms'
-import {Webtables} from '../../pages/webtables'
+import test from '../../fixtures/basePages'
 import {formData} from '../../test-data/formData'
 
-test('Verify user can submit the form.', async ({page}) => {
-  const Webtable = new Webtables(page)
-  const form = new forms(page)
+test('Verify user can submit the form.', async ({page, form, webtable}) => {
   await page.goto('/')
   await form.form_card()
   await form.practice_form_button()
-  await Webtable.first_name_field(formData.firstName)
-  await Webtable.last_name_field(formData.lastName)
-  await Webtable.email_field(formData.email)
+  await webtable.first_name_field(formData.firstName)
+  await webtable.last_name_field(formData.lastName)
+  await webtable.email_field(formData.email)
   await form.gender_check(formData.gender)
   await form.mobileNumber_field(formData.mobileNumber)
   await form.dob_field(formData.Month, formData.year, formData.day)

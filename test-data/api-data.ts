@@ -1,6 +1,6 @@
 export const apiData = {
-  userName: 'Test.user10',
-  secondUserName: 'User5',
+  userName: 'Test.user12',
+  secondUserName: 'User7',
   password: 'Testpassword11!',
   invalidPassword: 'testpassword',
   invalidUserID: '978144932582',
