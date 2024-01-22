@@ -1,29 +1,29 @@
 import {test, expect} from '@playwright/test'
 import {apiData} from '../../test-data/api-data'
+import {faker} from '@faker-js/faker'
 
 test.describe('Happy Flow', () => {
   let userID: any
   let token: any
 
   test('Creation of user account', async ({request}) => {
+    var username: string = faker.internet.userName()
     const response = await request.post('/Account/v1/User', {
       data: {
-        userName: apiData.userName,
+        userName: username,
         password: apiData.password,
       },
     })
     let userResponeBody = await response.json()
     expect.soft(response.status()).toBe(201)
     expect.soft(response.statusText()).toBe('Created')
-    expect
-      .soft(userResponeBody)
-      .toHaveProperty('username', `${apiData.userName}`)
+    expect.soft(userResponeBody).toHaveProperty('username', `${username}`)
     expect.soft(userResponeBody).toHaveProperty('books')
     userID = userResponeBody.userID
 
     const response2 = await request.post('/Account/v1/GenerateToken', {
       data: {
-        userName: apiData.userName,
+        userName: username,
         password: apiData.password,
       },
     })

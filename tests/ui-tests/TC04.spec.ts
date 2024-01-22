@@ -1,4 +1,4 @@
-import test, {expect} from '../../fixtures/basePages'
+import test from '../../fixtures/basePages'
 
 test('Verify the progress bar', async ({probar, page}) => {
   // const probar = new progressBar(page)

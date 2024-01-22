@@ -1,4 +1,4 @@
-import test, {expect} from '../../fixtures/basePages'
+import test from '../../fixtures/basePages'
 import {userData} from '../../test-data/userData'
 test.describe('TC01 Senario A and B', () => {
   test.beforeEach(async ({webtable, page}) => {

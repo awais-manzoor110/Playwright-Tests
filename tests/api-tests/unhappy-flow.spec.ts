@@ -1,27 +1,33 @@
 import {test, expect} from '@playwright/test'
 import {apiData} from '../../test-data/api-data'
+import {faker} from '@faker-js/faker'
 
 test.describe('UnHappy Flow', () => {
   let userID: any
   let token: any
+  var username: string = faker.internet.userName()
 
   test('Creation of user account with invalid format', async ({request}) => {
     const negativeResponse = await request.post('/Account/v1/User', {
       data: {
-        userName: apiData.secondUserName,
+        userName: username,
         password: apiData.invalidPassword,
       },
     })
+
     let userResponeBody = await negativeResponse.json()
+
     expect.soft(negativeResponse.status()).toBe(400)
     expect.soft(negativeResponse.statusText()).toBe('Bad Request')
     expect.soft(userResponeBody).toHaveProperty('message')
+
     const positiveResponse = await request.post('/Account/v1/User', {
       data: {
-        userName: apiData.secondUserName,
+        userName: username,
         password: apiData.password,
       },
     })
+
     expect(positiveResponse.status()).toBe(201)
 
     let positiveResponeBody = await positiveResponse.json()
@@ -32,11 +38,13 @@ test.describe('UnHappy Flow', () => {
   test('Gerenate token with wrong credentials', async ({request}) => {
     const negativeResponse = await request.post('/Account/v1/GenerateToken', {
       data: {
-        userName: apiData.secondUserName,
+        userName: username,
         password: apiData.invalidPassword,
       },
     })
+
     let negativeResponeBody = await negativeResponse.json()
+
     expect.soft(negativeResponse.status()).toBe(200)
     expect.soft(negativeResponse.statusText()).toBe('OK')
     expect.soft(negativeResponeBody).toHaveProperty('token', null)
@@ -44,12 +52,14 @@ test.describe('UnHappy Flow', () => {
     expect
       .soft(negativeResponeBody)
       .toHaveProperty('result', 'User authorization failed.')
+
     const positiveResponse = await request.post('/Account/v1/GenerateToken', {
       data: {
-        userName: apiData.secondUserName,
+        userName: username,
         password: apiData.password,
       },
     })
+
     let positiveResponeBody = await positiveResponse.json()
     token = positiveResponeBody.token
   })
@@ -70,6 +80,7 @@ test.describe('UnHappy Flow', () => {
     })
 
     let bookResponseBody = await negativeResponse.json()
+
     expect.soft(negativeResponse.status()).toBe(400)
     expect.soft(negativeResponse.statusText()).toBe('Bad Request')
     expect
@@ -79,6 +90,7 @@ test.describe('UnHappy Flow', () => {
         'ISBN supplied is not available in Books Collection!'
       )
   })
+
   test('Delete Book Store', async ({request}) => {
     const response = await request.delete(
       `https://demoqa.com/BookStore/v1/Books?UserId=${apiData.invalidUserID}`,

@@ -1,4 +1,4 @@
-import test, {expect} from '../../fixtures/basePages'
+import test from '../../fixtures/basePages'
 
 test('Verify user can drag and drop', async ({page, dragdrop}) => {
   await page.goto('/')
