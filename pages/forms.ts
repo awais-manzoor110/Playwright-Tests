@@ -1,4 +1,4 @@
-import {expect, type Page} from '@playwright/test'
+import {type Page} from '@playwright/test'
 export class forms {
   constructor(readonly page: Page) {
     this.page = page
@@ -8,6 +8,11 @@ export class forms {
   }
   async practice_form_button() {
     await this.page.getByText('Practice Form').click()
+  }
+  async page_zoomOut() {
+    await this.page.evaluate(() => {
+      document.body.style.transform = 'scale(1.0)'
+    })
   }
   async gender_check(gender: string) {
     await this.page.locator(`input[value='${gender}']`).check({force: true})
@@ -22,10 +27,9 @@ export class forms {
     await this.page.click(`.react-datepicker__day--0${day}`)
   }
   async subject_field(subject: string) {
-    await this.page.fill('#subjectsInput', subject)
+    await this.page.fill('#subjectsInput', subject, {force: true})
   }
   async hobbies_check(hobby: string) {
-    // await this.page.waitForLoadState('domcontentloaded')
     const check = await this.page.locator('.custom-checkbox').filter({
       has: this.page.locator('.custom-control-label'),
       hasText: hobby,
@@ -39,14 +43,14 @@ export class forms {
     await this.page.fill('#currentAddress', address)
   }
   async stateDropdown() {
-    await this.page.locator('#state').click({force: true})
-    await this.page.locator('#react-select-3-option-0').click({force: true})
+    await this.page.locator('#state').click()
+    await this.page.locator('#react-select-3-option-0').click()
   }
   async cityDropdown() {
-    await this.page.locator('#city').click({force: true})
-    await this.page.locator('#react-select-4-option-0').click({force: true})
+    await this.page.locator('#city').click()
+    await this.page.locator('#react-select-4-option-0').click()
   }
   async submit_button() {
-    await this.page.getByText('Submit').click({force: true})
+    await this.page.locator('#submit').click()
   }
 }

@@ -5,6 +5,7 @@ test('Verify user can submit the form.', async ({page, form, webtable}) => {
   await page.goto('/')
   await form.form_card()
   await form.practice_form_button()
+  await form.page_zoomOut()
   await webtable.first_name_field(formData.firstName)
   await webtable.last_name_field(formData.lastName)
   await webtable.email_field(formData.email)
@@ -15,10 +16,7 @@ test('Verify user can submit the form.', async ({page, form, webtable}) => {
   await form.hobbies_check(formData.hobbies)
   await form.upload_image()
   await form.current_address_field(formData.currentAddress)
-  /* I'm unable to interact with these elements in Chrome because when the Chromium browser launches, the page state becomes locked.
-   Consequently, scrolling is disabled, and since the dropdowns are located at the bottom of the page, they are not visible. 
-   Even if we pass the 'force true' option, we cannot perform the desired action. */
-  // await form.stateDropdown()
-  // await form.cityDropdown()
-  // await form.submit_button()
+  await form.stateDropdown()
+  await form.cityDropdown()
+  await form.submit_button()
 })
