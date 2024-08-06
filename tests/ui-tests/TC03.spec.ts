@@ -5,7 +5,6 @@ test('Verify user can submit the form.', async ({page, form, webtable}) => {
   await page.goto('/')
   await form.form_card()
   await form.practice_form_button()
-  await form.page_zoomOut()
   await webtable.first_name_field(formData.firstName)
   await webtable.last_name_field(formData.lastName)
   await webtable.email_field(formData.email)
