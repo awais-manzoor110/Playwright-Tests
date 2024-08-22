@@ -8,29 +8,31 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      # Checkout the repository
       - uses: actions/checkout@v3
+
+      # Setup Node.js
       - uses: actions/setup-node@v2
         with:
           node-version: '16.x'
 
-      - name: Get installed Playwright version
-        id: playwright-version
-        run: echo "PLAYWRIGHT_VERSION=$(node -e \"const pkgLock = require('./package-lock.json'); const version = pkgLock.devDependencies?.['@playwright/test']?.version; console.log(version || 'Not found')\")" >> $GITHUB_ENV
-
-      - name: Cache playwright binaries
+      # Cache Playwright browsers
+      - name: Cache Playwright binaries
         uses: actions/cache@v3
         id: playwright-cache
         with:
-          path: |
-            ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{env.PLAYWRIGHT_VERSION}}
-      - run: npm ci
-      - run: npx playwright install --with-deps
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-      - run: npx playwright install-deps
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+
+      # Install dependencies and Playwright browsers (only if not cached)
+      - name: Install dependencies and Playwright browsers
+        run: |
+          npm ci
+          npx playwright install
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
-      - name: Install Playwright browsers (only if not cached)
+      # Confirm that the Playwright browsers are installed
+      - name: Verify Playwright browser installation
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
