@@ -27,7 +27,7 @@ jobs:
         id: playwright-cache
         with:
           path: |
-            $env:USERPROFILE\.cache\ms-playwright
+            C:\Users\Awais\AppData\Local\ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
 
       - name: Install Playwright and its dependencies
