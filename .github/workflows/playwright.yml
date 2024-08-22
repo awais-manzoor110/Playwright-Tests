@@ -22,12 +22,10 @@ jobs:
           $PLAYWRIGHT_VERSION = npx playwright --version
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $env:GITHUB_ENV
 
-      - name: Check cache path
+      - name: Create cache directory
         run: |
-          if (Test-Path "$env:GITHUB_WORKSPACE/.cache/ms-playwright") {
-            Write-Host "Cache path exists."
-          } else {
-            Write-Host "Cache path does not exist."
+          if (-not (Test-Path "$env:GITHUB_WORKSPACE/.cache/ms-playwright")) {
+            New-Item -ItemType Directory -Path "$env:GITHUB_WORKSPACE/.cache/ms-playwright" -Force
           }
 
       - name: Cache playwright binaries
