@@ -22,18 +22,12 @@ jobs:
           $PLAYWRIGHT_VERSION = npx playwright --version
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $env:GITHUB_ENV
 
-      - name: Create cache directory
-        run: |
-          if (-not (Test-Path "$env:GITHUB_WORKSPACE/.cache/ms-playwright")) {
-            New-Item -ItemType Directory -Path "$env:GITHUB_WORKSPACE/.cache/ms-playwright" -Force
-          }
-
       - name: Cache playwright binaries
         uses: actions/cache@v3
         id: playwright-cache
         with:
           path: |
-            ${{ github.workspace }}\.cache\ms-playwright
+            $env:USERPROFILE\.cache\ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
 
       - name: Install Playwright and its dependencies
