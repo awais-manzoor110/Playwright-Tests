@@ -22,12 +22,16 @@ jobs:
           $PLAYWRIGHT_VERSION = npx playwright --version
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $env:GITHUB_ENV
 
+      - name: List Playwright cache directory
+        run: |
+          dir %LOCALAPPDATA%\ms-playwright
+
       - name: Cache playwright binaries
         uses: actions/cache@v3
         id: playwright-cache
         with:
           path: |
-            C:\Users\Awais\AppData\Local\ms-playwright
+            %LOCALAPPDATA%\ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
 
       - name: Install Playwright and its dependencies
