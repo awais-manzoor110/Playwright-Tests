@@ -45,3 +45,12 @@ jobs:
 
       - name: Run Playwright tests
         run: npm run ui-tests
+
+      - name: Generate Playwright HTML report
+        run: npx playwright show-report
+
+      - name: Upload Playwright HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-html-report
+          path: playwright-report
