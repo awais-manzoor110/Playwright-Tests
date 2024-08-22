@@ -13,10 +13,12 @@ jobs:
         with:
           node-version: '16.x'
 
+      - run: npm ci
+
       - name: Get installed Playwright version
         id: playwright-version
         run: |
-          PLAYWRIGHT_VERSION=$(node -e "console.log(require('/package-lock.json').devDependencies['@playwright/test'].version)")
+          PLAYWRIGHT_VERSION=$(npx playwright --version)
           echo "PLAYWRIGHT_VERSION=${PLAYWRIGHT_VERSION}" >> $GITHUB_ENV
 
       - name: Cache playwright binaries
@@ -26,8 +28,6 @@ jobs:
           path: |
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-
-      - run: npm ci
 
       - name: Install Playwright and its dependencies
         run: |
