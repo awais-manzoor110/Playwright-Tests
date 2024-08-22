@@ -18,8 +18,8 @@ jobs:
       - name: Get installed Playwright version
         id: playwright-version
         run: |
-          PLAYWRIGHT_VERSION=$(npx playwright --version)
-          echo "PLAYWRIGHT_VERSION=${PLAYWRIGHT_VERSION}" >> $GITHUB_ENV
+          $PLAYWRIGHT_VERSION = npx playwright --version
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $env:GITHUB_ENV
 
       - name: Cache playwright binaries
         uses: actions/cache@v3
