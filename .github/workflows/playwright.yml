@@ -9,11 +9,17 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      # Ensure directories exist
+      - name: Create necessary directories
+        run: |
+          mkdir -p ~/.npm
+          mkdir -p .cache/playwright
 
       # Cache NPM packages
       - name: Cache NPM packages
-        id: npm-cache # Add an ID for NPM cache
+        id: npm-cache
         uses: actions/cache@v3
         with:
           path: ~/.npm
@@ -21,13 +27,9 @@ jobs:
           restore-keys: |
             npm-${{ runner.os }}-
 
-      # Set environment variable for Playwright browser path
-      - name: Set Playwright browser path
-        run: echo "PLAYWRIGHT_BROWSERS_PATH=$(pwd)/.cache/playwright" >> $GITHUB_ENV
-
       # Cache Playwright browsers using dynamic path
       - name: Cache Playwright browsers
-        id: playwright-cache # Add an ID for Playwright cache
+        id: playwright-cache
         uses: actions/cache@v3
         with:
           path: .cache/playwright
@@ -36,9 +38,9 @@ jobs:
             playwright-${{ runner.os }}-
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
@@ -50,12 +52,11 @@ jobs:
 
       # Run Playwright tests
       - name: Run Playwright tests
-        run: npx playwright test
-        continue-on-error: true # Ensure the pipeline continues even if tests fail
+        run: npm run ui-tests
+        continue-on-error: true
 
-      # Upload Playwright HTML report, even if tests fail
       - name: Upload Playwright HTML Report
-        if: always() # Ensure this step always runs
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: playwright-report
