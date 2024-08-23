@@ -36,7 +36,7 @@ jobs:
             .cache/playwright/chromium
             .cache/playwright/firefox
             .cache/playwright/webkit
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ steps.determine-browsers.outputs.chromium-version }}-${{ steps.determine-browsers.outputs.firefox-version }}-${{ steps.determine-browsers.outputs.webkit-version }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ env.CHROMIUM_VERSION }}-${{ env.FIREFOX_VERSION }}-${{ env.WEBKIT_VERSION }}
           restore-keys: |
             playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
 
@@ -52,13 +52,21 @@ jobs:
       - name: Determine Browser Versions
         id: determine-browsers
         run: |
-          # Install browsers to get their versions
           npx playwright install --with-deps
-
-          # Set browser versions to GitHub environment variables
-          echo "CHROMIUM_VERSION=$(npx playwright show-report | grep -oP '(?<=Chromium )\d+\.\d+\.\d+')" >> $GITHUB_ENV
-          echo "FIREFOX_VERSION=$(npx playwright show-report | grep -oP '(?<=Firefox )\d+\.\d+\.\d+')" >> $GITHUB_ENV
-          echo "WEBKIT_VERSION=$(npx playwright show-report | grep -oP '(?<=WebKit )\d+\.\d+\.\d+')" >> $GITHUB_ENV
+          node -e "
+            const { chromium, firefox, webkit } = require('playwright');
+            const versions = {
+              chromium: require('playwright-core').chromium.BROWSER_VERSION,
+              firefox: require('playwright-core').firefox.BROWSER_VERSION,
+              webkit: require('playwright-core').webkit.BROWSER_VERSION
+            };
+            console.log('CHROMIUM_VERSION=' + versions.chromium);
+            console.log('FIREFOX_VERSION=' + versions.firefox);
+            console.log('WEBKIT_VERSION=' + versions.webkit);
+          " > versions.env
+          set -a
+          source versions.env
+        shell: bash
 
       # Install Playwright browsers only if cache is not restored
       - name: Install Playwright browsers
