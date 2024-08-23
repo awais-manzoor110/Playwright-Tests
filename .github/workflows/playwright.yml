@@ -22,7 +22,7 @@ jobs:
       # Cache NPM packages
       - name: Cache NPM packages
         id: npm-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
@@ -32,7 +32,7 @@ jobs:
       # Cache Playwright browsers
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .cache/playwright/chromium
