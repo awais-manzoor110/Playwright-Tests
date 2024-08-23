@@ -21,12 +21,16 @@ jobs:
           restore-keys: |
             npm-${{ runner.os }}-
 
-      # Cache Playwright binaries
+      # Set environment variable for Playwright browser path
+      - name: Set Playwright browser path
+        run: echo "PLAYWRIGHT_BROWSERS_PATH=$(pwd)/.cache/playwright" >> $GITHUB_ENV
+
+      # Cache Playwright browsers using dynamic path
       - name: Cache Playwright browsers
         id: playwright-cache # Add an ID for Playwright cache
         uses: actions/cache@v3
         with:
-          path: ~/.cache/ms-playwright
+          path: .cache/playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             playwright-${{ runner.os }}-
@@ -46,9 +50,6 @@ jobs:
 
       - name: Run Playwright tests
         run: npm run ui-tests
-
-      - name: Check if Playwright report exists
-        run: if [ -f ./playwright-report/index.html ]; then echo "Report exists"; else echo "Report not found"; fi
 
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v3
