@@ -9,15 +9,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Ensure directories exist
       - name: Create necessary directories
         run: |
-          mkdir -p ~/.npm
-          mkdir -p .cache/playwright/chromium
-          mkdir -p .cache/playwright/firefox
-          mkdir -p .cache/playwright/webkit
+          mkdir .cache/playwright/chromium
+          mkdir .cache/playwright/firefox
+          mkdir .cache/playwright/webkit
 
       # Cache NPM packages
       - name: Cache NPM packages
@@ -43,7 +42,7 @@ jobs:
             playwright-${{ runner.os }}-${{ hashFiles('package.json') }}-
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
