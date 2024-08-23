@@ -30,7 +30,13 @@ jobs:
         continue-on-error: true
 
       - name: Check if Playwright report exists
-        run: if [ -f ./playwright-report/index.html ]; then echo "Report exists"; else echo "Report not found"; fi
+        run: |
+          if (Test-Path "./playwright-report/index.html") {
+            Write-Output "Report exists"
+          } else {
+            Write-Output "Report not found"
+          }
+        shell: pwsh
 
       - name: Upload Playwright HTML Report
         if: always()
