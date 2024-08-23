@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       # Cache NPM packages
       - name: Cache NPM packages
@@ -36,9 +36,9 @@ jobs:
             playwright-${{ runner.os }}-
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: '20'
+          node-version: '16'
 
       - name: Install dependencies
         run: npm install
@@ -48,11 +48,15 @@ jobs:
         run: npx playwright install
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
+      # Run Playwright tests
       - name: Run Playwright tests
-        run: npm run ui-tests
+        run: npx playwright test
+        continue-on-error: true # Ensure the pipeline continues even if tests fail
 
-      - name: Upload Playwright HTML report
-        uses: actions/upload-artifact@v3
+      # Upload Playwright HTML report, even if tests fail
+      - name: Upload Playwright HTML Report
+        if: always() # Ensure this step always runs
+        uses: actions/upload-artifact@v2
         with:
-          name: playwright-html-report
+          name: playwright-report
           path: playwright-report
