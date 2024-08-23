@@ -11,53 +11,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Ensure directories exist
-      - name: Create necessary directories
-        run: |
-          mkdir .cache/playwright/chromium
-          mkdir .cache/playwright/firefox
-          mkdir .cache/playwright/webkit
-
-      # Cache NPM packages
-      - name: Cache NPM packages
-        id: npm-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            npm-${{ runner.os }}-
-
-      # Cache Playwright browsers
-      - name: Cache Playwright browsers
-        id: playwright-cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            .cache/playwright/chromium
-            .cache/playwright/firefox
-            .cache/playwright/webkit
-          key: playwright-${{ runner.os }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            playwright-${{ runner.os }}-${{ hashFiles('package.json') }}-
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      # Install Playwright browsers only if cache is not restored
       - name: Install Playwright browsers
         run: npx playwright install
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
 
-      # Run Playwright tests
+      - name: Create report directory (if necessary)
+        run: mkdir -p playwright-report
+
       - name: Run Playwright tests
         run: npm run ui-tests
         continue-on-error: true
+
+      - name: Check if Playwright report exists
+        run: if [ -f ./playwright-report/index.html ]; then echo "Report exists"; else echo "Report not found"; fi
 
       - name: Upload Playwright HTML Report
         if: always()
