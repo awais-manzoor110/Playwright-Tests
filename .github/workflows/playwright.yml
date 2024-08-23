@@ -15,7 +15,9 @@ jobs:
       - name: Create necessary directories
         run: |
           mkdir -p ~/.npm
-          mkdir -p .cache/playwright
+          mkdir -p .cache/playwright/chromium
+          mkdir -p .cache/playwright/firefox
+          mkdir -p .cache/playwright/webkit
 
       # Cache NPM packages
       - name: Cache NPM packages
