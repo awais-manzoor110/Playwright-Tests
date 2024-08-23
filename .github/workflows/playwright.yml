@@ -45,7 +45,7 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Run Playwright tests
-        run: npm run playwright-front-end-regulatory-test
+        run: npm run ui-tests
 
       - name: Check if Playwright report exists
         run: if [ -f ./playwright-report/index.html ]; then echo "Report exists"; else echo "Report not found"; fi
