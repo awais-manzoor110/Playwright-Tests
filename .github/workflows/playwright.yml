@@ -27,15 +27,18 @@ jobs:
           restore-keys: |
             npm-${{ runner.os }}-
 
-      # Cache Playwright browsers using dynamic path
+      # Cache Playwright browsers
       - name: Cache Playwright browsers
         id: playwright-cache
         uses: actions/cache@v3
         with:
-          path: .cache/playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          path: |
+            .cache/playwright/chromium
+            .cache/playwright/firefox
+            .cache/playwright/webkit
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ steps.determine-browsers.outputs.chromium-version }}-${{ steps.determine-browsers.outputs.firefox-version }}-${{ steps.determine-browsers.outputs.webkit-version }}
           restore-keys: |
-            playwright-${{ runner.os }}-
+            playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -44,6 +47,18 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      # Determine and set the browser versions for cache key
+      - name: Determine Browser Versions
+        id: determine-browsers
+        run: |
+          # Install browsers to get their versions
+          npx playwright install --with-deps
+
+          # Set browser versions to GitHub environment variables
+          echo "CHROMIUM_VERSION=$(npx playwright show-report | grep -oP '(?<=Chromium )\d+\.\d+\.\d+')" >> $GITHUB_ENV
+          echo "FIREFOX_VERSION=$(npx playwright show-report | grep -oP '(?<=Firefox )\d+\.\d+\.\d+')" >> $GITHUB_ENV
+          echo "WEBKIT_VERSION=$(npx playwright show-report | grep -oP '(?<=WebKit )\d+\.\d+\.\d+')" >> $GITHUB_ENV
 
       # Install Playwright browsers only if cache is not restored
       - name: Install Playwright browsers
@@ -57,7 +72,7 @@ jobs:
 
       - name: Upload Playwright HTML Report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report
           path: playwright-report
