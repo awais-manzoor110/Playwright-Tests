@@ -38,9 +38,9 @@ jobs:
             .cache/playwright/chromium
             .cache/playwright/firefox
             .cache/playwright/webkit
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('package.json') }}
           restore-keys: |
-            playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+            playwright-${{ runner.os }}-${{ hashFiles('package.json') }}-
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -48,26 +48,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
-
-      # Determine and set the browser versions for cache key
-      - name: Determine Browser Versions
-        id: determine-browsers
-        run: |
-          node -e "
-            const { chromium, firefox, webkit } = require('playwright');
-            const versions = {
-              chromium: require('playwright-core').chromium.BROWSER_VERSION,
-              firefox: require('playwright-core').firefox.BROWSER_VERSION,
-              webkit: require('playwright-core').webkit.BROWSER_VERSION
-            };
-            console.log('CHROMIUM_VERSION=' + versions.chromium);
-            console.log('FIREFOX_VERSION=' + versions.firefox);
-            console.log('WEBKIT_VERSION=' + versions.webkit);
-          " > versions.env
-          set -a
-          source versions.env
-        shell: bash
+        run: npm ci
 
       # Install Playwright browsers only if cache is not restored
       - name: Install Playwright browsers
