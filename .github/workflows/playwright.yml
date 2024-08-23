@@ -38,7 +38,7 @@ jobs:
             .cache/playwright/chromium
             .cache/playwright/firefox
             .cache/playwright/webkit
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ env.CHROMIUM_VERSION }}-${{ env.FIREFOX_VERSION }}-${{ env.WEBKIT_VERSION }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
 
@@ -54,7 +54,6 @@ jobs:
       - name: Determine Browser Versions
         id: determine-browsers
         run: |
-          npx playwright install --with-deps
           node -e "
             const { chromium, firefox, webkit } = require('playwright');
             const versions = {
